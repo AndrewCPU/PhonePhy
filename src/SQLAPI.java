@@ -179,15 +179,22 @@ public class SQLAPI {
 //
     public boolean isClaimed(int area) throws SQLException
     {
-        DatabaseMetaData md = con.getMetaData();
-        ResultSet rs = md.getColumns(null, null, "claimed_area_codes", area + "");
-        if (rs.next()) {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        String query = "SELECT * FROM phone_numbers.claimed_area_codes";
+            // create the java statement
+            Statement st = con.createStatement();
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+
+            // iterate through the java resultset
+            while (rs.next()) {
+                int i = rs.getInt("area_code");
+                if(i==area)
+                {
+                    return true;
+                }
+
+            }
+        return false;
     }
     public void addPhoneNumber(int a, int b,  int c) throws Exception
     {
